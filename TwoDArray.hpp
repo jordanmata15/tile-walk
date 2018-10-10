@@ -46,10 +46,10 @@ class TwoDArray{
     ~TwoDArray(){ delete vecPtr; }
 
     /* Getter method for accessing number of Rows. */
-    int getRows(){ return numRows; }
+    int getNumRows(){ return numRows; }
   
     /* Getter method for accessing number of Columns. */
-    int getCols(){ return numCols; }
+    int getNumCols(){ return numCols; }
     
     /* Used to read the object in the (i,j) index of the 2D 
      * array.

@@ -37,36 +37,50 @@ void Board::setCurrIdx(int i, int j){
 }
     
 bool Board::isValidMove( char dir ){
-  if ( dir == UP ){
-    if ( currIdx.first < 0 ||
-         boardArr->at(currIdx.first - 1, currIdx.second) != emptyChar){
-      return false;
-    }
+  
+  switch(dir){
+  
+    // If on top border or top index occupied, return false
+    case UP:
+      if ( currIdx.first <= 0 ||
+            boardArr->at(currIdx.first-1, currIdx.second) != emptyChar){
+        return false;
+      }
+      break;
+    
+    // If on bottom border or bottom index occupied, return false
+    case DOWN:
+      if ( currIdx.first >= boardArr->getNumRows()-1 ||
+            boardArr->at(currIdx.first+1, currIdx.second) != emptyChar){
+        return false;
+      }
+      break;
+    
+    // If on left border or left index occupied, return false
+    case LEFT:
+      if ( currIdx.second <= 0 ||
+            boardArr->at(currIdx.first, currIdx.second-1) != emptyChar){
+        return false;
+      }
+      break;
+    
+    // If on right border or right index occupied, return false
+    case RIGHT:
+      if ( currIdx.second >= boardArr->getNumCols()-1 ||
+            boardArr->at(currIdx.first, currIdx.second+1) != emptyChar){
+        return false;
+      }
+      break;
   }
-  if ( dir == DOWN ){
-    if ( currIdx.first >= boardArr->getNumRows() ||
-          boardArr->at(currIdx.first + 1, currIdx.second) != emptyChar){
-      return false;
-    }
-  }
-  if ( dir == LEFT ){
-    if ( currIdx.second <= 0 ||
-          boardArr->at(currIdx.first, currIdx.second - 1) != emptyChar){
-      return false;
-    }
-  }
-  if ( dir == RIGHT ){
-    if ( currIdx.second >= boardArr->getNumCols() ||
-          boardArr->at(currIdx.first, currIdx.second + 1) != emptyChar){
-      return false;
-    }
-  }
+
+  // If move wasn't invalid, return true
   return true;
 }
     
 int Board::move( char dir ){
   int newI = currIdx.first;
   int newJ = currIdx.second;
+  std::cout << newI << ", " << newJ << "\n";
   
   if ( isValidMove(dir) ){
     switch(dir){
@@ -79,7 +93,6 @@ int Board::move( char dir ){
     boardArr->insert(newI, newJ, fprintChar);
     return 0;
   }
-  
   else return -1;
 }
 
