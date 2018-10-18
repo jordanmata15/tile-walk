@@ -7,13 +7,6 @@
  */
 
 #include <vector>
-#include <iostream>
-
-char const TAB_CHAR = '\t';
-char const SPACE_CHAR = ' ';
-int const DEF_ROW_SIZE = 10;
-int const DEF_COL_SIZE = 10;
-
 
 /* Description: Used to emulate a 2D vector using contigous memory. Stores 
  *              objects of generic type T.
@@ -23,14 +16,18 @@ template<typename T>
 class TwoDArray{
   
   private:
+    char const TAB_CHAR = '\t';
+    char const SPACE_CHAR = ' ';
+    int const DEF_ROW_SIZE = 10;
+    int const DEF_COL_SIZE = 10;
     int numRows;
     int numCols;
-    std::vector<T> *vecPtr; // Underlying container
+    std::vector<T> * vecPtr; // Underlying container
 
   public:
     /* Default constructor, creates the container of default size
      */
-    TwoDArray(){ TwoDArray( DEF_ROW_SIZE, DEF_COL_SIZE ); }
+    TwoDArray(): TwoDArray( DEF_ROW_SIZE, DEF_COL_SIZE ){ }
 
     /* Constructor that specifies the size of the 2D Array.
      * Analogous to an mxn matrix.
@@ -38,8 +35,8 @@ class TwoDArray{
      * arg1 - int m -- Indicates number of rows
      * arg2 - int n -- Indicates number of columns
      */
-    TwoDArray( int m, int n ):numRows(m), numCols(n),
-                              vecPtr(new std::vector<T>(m*n)){}
+    TwoDArray( const int & m, const int & n ): numRows(m), 
+                numCols(n), vecPtr(new std::vector<T>(m*n)){}
 
     /* Destructor that specifies the size of the 2D Array
      */
