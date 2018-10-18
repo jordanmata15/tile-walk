@@ -8,6 +8,7 @@
 
 #include "TwoDArray.hpp"
 #include <utility>
+#include <iostream>
 
 const char UP = 'w';
 const char DOWN = 's';
