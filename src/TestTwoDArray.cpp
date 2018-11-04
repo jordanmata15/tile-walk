@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <limits.h>
 #include <iostream>
+#include <vector>
 #include "TwoDArray.hpp"
 
 class TestTwoDArray : public testing::Test{
@@ -13,13 +14,10 @@ class TestTwoDArray : public testing::Test{
     }
 
     virtual void TearDown(){
-      delete arrPtrDef;
-      delete intArrPtr;
     }
 };
 
 TEST_F( TestTwoDArray, validSizeTest ){
-  std::cout << "TEST 1" << std::endl;
   // Default constructor
   TwoDArray<int> arrDef;
   arrPtrDef = new TwoDArray<int>();
@@ -89,11 +87,55 @@ TEST_F( TestTwoDArray, validSizeTest ){
   ASSERT_EQ(INT_MAX,arr6.getNumCols());
   ASSERT_EQ(INT_MAX,intArrPtr->getNumRows()); // Heap test
   ASSERT_EQ(INT_MAX,intArrPtr->getNumCols());
-  
+  delete arrPtrDef;
+  delete intArrPtr;
 }
 
-TEST_F( TestTwoDArray, invalidSizeTest ){
+TEST_F( TestTwoDArray, validTypeTest ){
+  // int Test
+  TwoDArray<int> intArrDef;
+  TwoDArray<int> intArr(10,7);
+  intArrDef.insert(0,0,3);
+  intArr.insert(0,0,4);
+  ASSERT_EQ(typeid(int),typeid(intArrDef.at(0,0)));
+  ASSERT_EQ(typeid(int),typeid(intArr.at(0,0)));
+
+  // char test
+  TwoDArray<char> charArrDef;
+  TwoDArray<char> charArr(7,10);
+  charArrDef.insert(0,0,'a');
+  charArr.insert(0,0,'$');
+  ASSERT_EQ(typeid(char),typeid(charArrDef.at(0,0)));
+  ASSERT_EQ(typeid(char),typeid(charArr.at(0,0)));
+
+  // pointer test
+  void * temp = nullptr;
+  TwoDArray<void *> ptrArrDef;
+  TwoDArray<void *> ptrArr(7,7);
+  ptrArrDef.insert(0,0,temp);
+  ptrArr.insert(0,0,temp);
+  ASSERT_EQ(typeid(void *),typeid(ptrArrDef.at(0,0)));
+  ASSERT_EQ(typeid(void *),typeid(ptrArr.at(0,0)));
+
+  // object test (vector)
+  std::vector<int> intVec;
+  TwoDArray<std::vector<int>> vecArrDef;
+  TwoDArray<std::vector<int>> vecArr(2,3);
+  vecArrDef.insert(0,0,intVec);
+  vecArr.insert(0,0,intVec);
+  ASSERT_EQ(typeid(std::vector<int>),typeid(vecArrDef.at(0,0)));
+  ASSERT_EQ(typeid(std::vector<int>),typeid(vecArr.at(0,0)));
   
+  // object test (TwoDArray)
+  TwoDArray<TwoDArray<int>> arrayArrDef;
+  TwoDArray<TwoDArray<int>> arrayArr(2,3);
+  arrayArrDef.insert(0,0,intArr);
+  arrayArr.insert(0,0,intArr);
+  ASSERT_EQ(typeid(TwoDArray<int>),typeid(arrayArrDef.at(0,0)));
+  ASSERT_EQ(typeid(TwoDArray<int>),typeid(arrayArr.at(0,0)));
+}
+
+TEST_F( TestTwoDArray, testCopy ){
 }
 
 int main(int argc, char* argv[]){
