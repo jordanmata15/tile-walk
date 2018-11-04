@@ -26,19 +26,8 @@ TestTwoDArray: $(BUILD)/TestTwoDArray.o
 TestBoard: $(BUILD)/TestBoard.o $(BUILD)/Board.o
 	$(CXX) $(CPPFLAGS) -o $(BUILD)/$@ $^ $(LDFLAGS)
 
-#TestAll: $(TESTOBJ)
-#	$(CXX) $(CPPFLAGS) -o $(BUILD)/$@ $^ $(LDFLAGS)
-
-#all: TestAll
-
-#TestAll: $(TESTOBJ)
-#	$(CXX) $(CPPFLAGS) -o $(BUILD)/$@ $^ $(LDFLAGS)	
-
 $(BUILD)/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<	
 
-$(BUILD):
-	mkdir $@
-
 clean:
-	rm -rf $(BUILD) core
+	rm -rf $(BUILD)/* core
