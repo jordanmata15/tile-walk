@@ -9,14 +9,48 @@ class TestTwoDArray : public testing::Test{
     
     TwoDArray<int> * arrPtrDef;
     TwoDArray<int> * intArrPtr;
+    TwoDArray<int> inOrderArr;
+    TwoDArray<int> reverseArr;
+    TwoDArray<int> mixedArr;
+    TwoDArray<int> nonSquareArr;
 
     virtual void SetUp(){
+      inOrderArr = TwoDArray<int>(10,10);
+      reverseArr = TwoDArray<int>(10,10);
+      mixedArr = TwoDArray<int>(10,10);
+      nonSquareArr = TwoDArray<int>(7,5);
+
+      for( int i = 0; i < 10; i++){
+        for( int j = 0; j < 10; j++){
+          int nextVal = (10*i)+j;
+
+          inOrderArr.insert(i,j,nextVal);
+          reverseArr.insert(9-i,9-j,nextVal);
+          
+          if (nextVal % 2 == 0) mixedArr.insert(i,j,nextVal); 
+          else mixedArr.insert(i,j,100-nextVal); 
+        
+        }
+      }
     }
 
     virtual void TearDown(){
+      for( int i = 0; i < 10; i++){
+        for( int j = 0; j < 10; j++){
+          //std::cout << reverseArr.at(i,j) << '\t';
+          //std::cout << inOrderArr.at(i,j) << '\t';
+          //std::cout << mixedArr.at(i,j) << '\t';
+          //if (i < 7 && j < 5) std::cout << nonSquareArr.at(i,j) << '\t';
+        }
+        //std::cout << std::endl;
+      }
     }
 };
 
+/* Test of valid initialization sizes of the TwoDArray. Tests for cases where 
+ * both dimensions of the same size, one larger than the other, and default 
+ * constructor. Sizes range from 0 to INT_MAX
+ */
 TEST_F( TestTwoDArray, validSizeTest ){
   // Default constructor
   TwoDArray<int> arrDef;
@@ -80,7 +114,7 @@ TEST_F( TestTwoDArray, validSizeTest ){
   ASSERT_EQ(0,intArrPtr->getNumCols());
   delete intArrPtr;
   
-  // #ROWS/#COLS VERY LARGE
+  // #ROWS and #COLS VERY LARGE
   TwoDArray<int> arr6(INT_MAX,INT_MAX);
   intArrPtr = new TwoDArray<int>(INT_MAX,INT_MAX);
   ASSERT_EQ(INT_MAX,arr6.getNumRows()); // Stack test
@@ -91,6 +125,10 @@ TEST_F( TestTwoDArray, validSizeTest ){
   delete intArrPtr;
 }
 
+/* Test used to verify the vector correctly supports different data types.
+ * Tests using primitive and reference types, including a test where the
+ * 2D array holds 2D array objects
+ */
 TEST_F( TestTwoDArray, validTypeTest ){
   // int Test
   TwoDArray<int> intArrDef;
@@ -135,7 +173,15 @@ TEST_F( TestTwoDArray, validTypeTest ){
   ASSERT_EQ(typeid(TwoDArray<int>),typeid(arrayArr.at(0,0)));
 }
 
+/* Test of the operator= function for TwoDArray
+ *
+ */
 TEST_F( TestTwoDArray, testCopy ){
+  // Resizing test (new dimensions different than original)
+  TwoDArray<int> copyArr(9,12);
+  copyArr = inOrderArr;
+  ASSERT_EQ(10,copyArr.getNumRows());
+  ASSERT_EQ(10,copyArr.getNumCols());
 }
 
 int main(int argc, char* argv[]){
