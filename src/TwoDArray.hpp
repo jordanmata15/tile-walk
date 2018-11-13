@@ -9,7 +9,8 @@
 #include <vector>
 
 /* Description: Used to emulate a 2D vector using contigous memory. Stores 
- *              objects of generic type T.
+ *              objects of generic type T. Implemented in header to allow
+ *              generics during compile time.
  */
 template<typename T>
 class TwoDArray{
@@ -26,47 +27,60 @@ class TwoDArray{
   public:
     /* Default constructor, creates the container of default size
      */
-    TwoDArray(): TwoDArray( DEF_ROW_SIZE, DEF_COL_SIZE ){ }
+    TwoDArray():TwoDArray( DEF_ROW_SIZE, DEF_COL_SIZE ){}
 
     /* Constructor that specifies the size of the 2D Array.
      * Analogous to an mxn matrix.
      *
-     * arg1 - int m -- Indicates number of rows
-     * arg2 - int n -- Indicates number of columns
+     * arg1 - const int & m -- Indicates number of rows
+     * arg2 - const int & n -- Indicates number of columns
      */
-    TwoDArray( const int & m, const int & n ): numRows(m), 
-                numCols(n), vec(m*n){}
+    TwoDArray( const int & m, const int & n ): 
+                    numRows(m), numCols(n), vec(m*n){}
 
-    /* Destructor that specifies the size of the 2D Array
+    /* Default destructor
      */
-    ~TwoDArray(){ }
+    ~TwoDArray(){}
     
-    /* Overload =operator to copy the contents
+    /* Overload operator= to copy the contents of another 2D 
+     * array into this array. Settings this_arr = x_arr makes 
+     * this_arr a reference to a copy of x_arr
+     *
+     * arg1 - const TwoDArray & x -- 2DArray to set this equal to
      */
-    TwoDArray& operator=(const TwoDArray& x){this->vec=x.vec; return *this;}
+    TwoDArray & operator=( const TwoDArray & x ){
+      this->vec = x.vec;
+      this->numRows = x.numRows;
+      this->numCols = x.numCols;
+      return *this;
+    }
 
     /* Getter method for accessing number of Rows. */
     int getNumRows(){ return numRows; }
   
     /* Getter method for accessing number of Columns. */
     int getNumCols(){ return numCols; }
-    
+
     /* Used to read the object in the (i,j) index of the 2D 
      * array.
      *
-     * arg1 - int i -- Indicates number of rows
-     * arg2 - int j -- Indicates number of rows
+     * arg1 - const int & i -- Indicates number of rows
+     * arg2 - const int & j -- Indicates number of rows
      */
-    T at( int i, int j ){ return vec.at( i*(numCols)+j ); }
+    T at( const int & i, const int & j ){
+      return vec.at( (i*numCols) + j );
+    }
 
     /* Used to write to the (i,j) index of the 2D array.
      * Overwrites current object at that index.
      *
-     * arg1 - int i -- Indicates number of rows
-     * arg2 - int j -- Indicates number of rows
-     * arg3 - T key -- Object of generic type T to insert
+     * arg1 - const int & i -- Indicates number of rows
+     * arg2 - const int & j -- Indicates number of rows
+     * arg3 - const T & key -- Object of generic type T to insert
      */
-    void insert( int i, int j, T item ){ vec.at( i*(numCols)+j ) = item; }
+    void insert( const int & i, const int & j, const T & item ){
+      vec.at( (i*numCols) + j ) = item;
+    }
 
 };
 #endif // TWODARRAY_HPP
