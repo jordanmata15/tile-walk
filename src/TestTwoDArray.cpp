@@ -1,12 +1,17 @@
+/* Author: Jordan Mata
+ * File: TestTwoDArray.cpp
+ * Date: November 12, 2018
+ */
+
 #include <gtest/gtest.h>
 #include <limits.h>
-#include <iostream>
 #include <vector>
+#include <iostream>
 #include "TwoDArray.hpp"
 
 class TestTwoDArray : public testing::Test{
-  public:
-    
+  
+  public:    
     TwoDArray<int> * arrPtrDef;
     TwoDArray<int> * intArrPtr;
     TwoDArray<int> inOrderArr;
@@ -19,7 +24,8 @@ class TestTwoDArray : public testing::Test{
       reverseArr = TwoDArray<int>(10,10);
       mixedArr = TwoDArray<int>(10,10);
       nonSquareArr = TwoDArray<int>(7,5);
-
+      
+      // populate the 3 arrays
       for( int i = 0; i < 10; i++){
         for( int j = 0; j < 10; j++){
           int nextVal = (10*i)+j;
@@ -27,6 +33,7 @@ class TestTwoDArray : public testing::Test{
           inOrderArr.insert(i,j,nextVal);
           reverseArr.insert(9-i,9-j,nextVal);
           
+          // populate mixed with alternating vals
           if (nextVal % 2 == 0) mixedArr.insert(i,j,nextVal); 
           else mixedArr.insert(i,j,100-nextVal); 
         
@@ -35,7 +42,8 @@ class TestTwoDArray : public testing::Test{
     }
 
     virtual void TearDown(){
-      for( int i = 0; i < 10; i++){
+      // Used to visually debug arrays by printing them
+      /*for( int i = 0; i < 10; i++){
         for( int j = 0; j < 10; j++){
           //std::cout << reverseArr.at(i,j) << '\t';
           //std::cout << inOrderArr.at(i,j) << '\t';
@@ -43,7 +51,7 @@ class TestTwoDArray : public testing::Test{
           //if (i < 7 && j < 5) std::cout << nonSquareArr.at(i,j) << '\t';
         }
         //std::cout << std::endl;
-      }
+      }*/
     }
 };
 
@@ -173,15 +181,62 @@ TEST_F( TestTwoDArray, validTypeTest ){
   ASSERT_EQ(typeid(TwoDArray<int>),typeid(arrayArr.at(0,0)));
 }
 
-/* Test of the operator= function for TwoDArray
- *
+/* Test of the operator= function for TwoDArray. Tests that num
+ * rows/cols match the rval and that the content in the vectors
+ * are the same.
  */
 TEST_F( TestTwoDArray, testCopy ){
   // Resizing test (new dimensions different than original)
   TwoDArray<int> copyArr(9,12);
+  ASSERT_EQ(9,copyArr.getNumRows());
+  ASSERT_EQ(12,copyArr.getNumCols());
+  
   copyArr = inOrderArr;
   ASSERT_EQ(10,copyArr.getNumRows());
   ASSERT_EQ(10,copyArr.getNumCols());
+
+  TwoDArray<int> mixedSize(17, 33);
+  copyArr = mixedSize;
+  ASSERT_EQ(17,copyArr.getNumRows());
+  ASSERT_EQ(33,copyArr.getNumCols());
+
+  // Testing same content with resizing
+  TwoDArray<int> emptyArr(18,100);
+  emptyArr = inOrderArr;
+  for( int i = 0; i < emptyArr.getNumRows(); i++){
+    for( int j = 0; j < emptyArr.getNumCols(); j++){
+      ASSERT_EQ(inOrderArr.at(i,j), emptyArr.at(i,j));
+    }
+  }
+}
+
+/* Tests the insert and At functions. Compares the results with
+ * the equivalent 2D arrays
+ */
+TEST_F( TestTwoDArray, testInsertAndAt ){
+  int intArr[10][10];
+  int sumArrA[10][10];
+  TwoDArray<int> sumArrV(10,10);
+
+  // populate the arrays
+  for( int i = 0; i < 10; i++){
+    for( int j = 0; j < 10; j++){
+      intArr[i][j] = (10*i)+j; // populate an array in order
+                               // to compare to inOrderArr
+      int val = mixedArr.at(i,j) + inOrderArr.at(i,j)
+                  + reverseArr.at(i,j);
+      sumArrA[i][j] = val;      // populate array and a vector
+      sumArrV.insert(i,j, val); // to compare to each other
+    }
+  }
+
+  // Compare the arrays
+  for( int i = 0; i < 10; i++){
+    for( int j = 0; j < 10; j++){
+      ASSERT_EQ(inOrderArr.at(i,j), intArr[i][j]);
+      ASSERT_EQ(sumArrA[i][j], sumArrV.at(i,j));
+    }
+  }
 }
 
 int main(int argc, char* argv[]){
