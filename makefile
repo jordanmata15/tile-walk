@@ -16,7 +16,7 @@ LDFLAGS = -L /usr/local/lib -l gtest -l pthread
 TEST_TARGETS = TestTwoDArray TestBoard
 TESTOBJ = $(BUILD)/TestTwoDArray.o $(BUILD)/TestBoard.o \
 					$(BUILD)/Board.o
-OBJ = Board.o
+OBJ = $(BUILD)/Board.o
 
 all: $(TEST_TARGETS)
 

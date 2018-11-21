@@ -2,7 +2,7 @@
 #define TWODARRAY_HPP
 
 /* Author: Jordan Mata
- * File: 2D_Array.hpp
+ * File: TwoDArray.hpp
  * Date: September 30, 2018
  */
 
