@@ -52,8 +52,23 @@ void Board::clearBoard(){
  *
  * return - 0 if loaded successfully, -1 otherwise
  */
-int Board::loadBoard(){
-  //TODO 
+int Board::loadBoard( std::string filename ){
+  std::string currLine;
+  std::ifstream readFile(filename);
+  bool headerIsRead = false;
+  if ( readFile.is_open() ){
+    if (!headerIsRead){ // Parse the header to read size
+      std::getline(readFile, currLine, 'x');
+      int numRows = std::stoi(currLine);
+      std::getline(readFile, currLine);
+      int numCols = std::stoi(currLine);
+      headerIsRead = true;
+      // TODO Read the chars to use
+    }
+    while( getline(readFile,currLine) ){ // Read the table line by line
+      // TODO read the table itself
+    }
+  }
   return 0;
 }
 
@@ -62,8 +77,7 @@ int Board::loadBoard(){
  * const char & - dir -- direction to check if valid from currIdx
  * return - returns true if valid move, false otherwise
  */
-bool Board::isValidMove(const char & dir){
-  
+bool Board::isValidMove(const char & dir){ 
   switch(dir){
   
     // If on top border or top index occupied, return false
@@ -131,10 +145,16 @@ int Board::move(const char & dir){
 /* Prints the board to stdout
  */
 void Board::displayBoard(){
+  // print top border
+  for ( int i = 0; i < boardArr->getNumRows(); i++ ){std::cout << bChar;}
+  // print board
   for ( int i = 0; i < boardArr->getNumRows(); i++ ){
+    std::cout << bChar;
     for ( int j = 0; j < boardArr->getNumCols(); j++ ){
       std::cout << boardArr->at(i,j);
     }
-    std::cout << std::endl;
+    std::cout << bChar << std::endl;
   }
+  // print bottom border
+  for ( int i = 0; i < boardArr->getNumRows(); i++ ){std::cout << bChar;}
 }

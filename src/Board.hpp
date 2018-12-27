@@ -9,6 +9,8 @@
 #include "TwoDArray.hpp"
 #include <utility>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 const char UP = 'w';
 const char DOWN = 's';
@@ -60,7 +62,7 @@ class Board{
      *
      * return - 0 if loaded successfully, -1 otherwise
      */
-    int loadBoard();
+    int loadBoard( std::string filename );
 
     /* Checks if there is a move to make from the current index
      * 
