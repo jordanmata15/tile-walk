@@ -18,7 +18,7 @@ Board::Board(const int & m, const int & n, const char & borderChar,
   bChar = borderChar;
   fpChar = fprintChar;
   eChar = emptyChar;
-  boardArr = new TwoDArray<char>(m,n);
+  boardArr = new TwoDArray<char>(m,n); // TODO cane make on stack?
   currIdx = std::make_pair(0,0);
 }
 
@@ -57,16 +57,27 @@ int Board::loadBoard( std::string filename ){
   std::ifstream readFile(filename);
   bool headerIsRead = false;
   if ( readFile.is_open() ){
-    if (!headerIsRead){ // Parse the header to read size
+    if (!headerIsRead){ // Parse the header to read size      
+      // Read the numRows then numCols deliminated by 'x'
       std::getline(readFile, currLine, 'x');
-      int numRows = std::stoi(currLine);
+      setNumRows(std::stoi(currLine));
       std::getline(readFile, currLine);
       int numCols = std::stoi(currLine);
+      // Read the chars to use
+      readFile >> bChar;
+      readFile >> fpChar;
+      readFile >> eChar;
       headerIsRead = true;
-      // TODO Read the chars to use
     }
-    while( getline(readFile,currLine) ){ // Read the table line by line
-      // TODO read the table itself
+    // TODO initialize 2D array
+    
+    int i = 0;
+    while( std::getline(readFile,currLine) ){ // Read the table line by line
+      // TODO break the line into chars for the 2d array
+      for (int j = 0; j < getNumCols(); j++ ){
+        //boardArr.insert(i, j, readFile[j]);
+      }
+      ++i;
     }
   }
   return 0;
