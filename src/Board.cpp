@@ -18,7 +18,7 @@ Board::Board(const int & m, const int & n, const char & borderChar,
   bChar = borderChar;
   fpChar = fprintChar;
   eChar = emptyChar;
-  boardArr = new TwoDArray<char>(m,n); // TODO cane make on stack?
+  boardArr = new TwoDArray<char>(m,n);
   currIdx = std::make_pair(0,0);
 }
 
@@ -55,31 +55,36 @@ void Board::clearBoard(){
 int Board::loadBoard( std::string filename ){
   std::string currLine;
   std::ifstream readFile(filename);
-  bool headerIsRead = false;
   if ( readFile.is_open() ){
-    if (!headerIsRead){ // Parse the header to read size      
-      // Read the numRows then numCols deliminated by 'x'
-      std::getline(readFile, currLine, 'x');
-      setNumRows(std::stoi(currLine));
-      std::getline(readFile, currLine);
-      int numCols = std::stoi(currLine);
-      // Read the chars to use
-      readFile >> bChar;
-      readFile >> fpChar;
-      readFile >> eChar;
-      headerIsRead = true;
-    }
-    // TODO initialize 2D array
+    // Read the new numRows then new numCols deliminated by 'x'
+    std::getline(readFile, currLine, 'x');
+    int numRows = std::stoi(currLine);
+    std::getline(readFile, currLine);
+    int numCols = std::stoi(currLine);
     
+    // Read the chars to use    
+    std::getline(readFile, currLine);
+    bChar = currLine[0];
+    std::getline(readFile, currLine);
+    fpChar = currLine[0];
+    std::getline(readFile, currLine);
+    eChar = currLine[0];
+    
+    // reinitialize new 2D array
+    delete boardArr;
+    boardArr = new TwoDArray<char>(numRows, numCols);
+    clearBoard();
+
+    // Read the array itself
     int i = 0;
-    while( std::getline(readFile,currLine) ){ // Read the table line by line
-      // TODO break the line into chars for the 2d array
-      for (int j = 0; j < getNumCols(); j++ ){
-        //boardArr.insert(i, j, readFile[j]);
+    while( std::getline(readFile,currLine) && i<boardArr->getNumRows() ){
+      for (int j = 0; j < boardArr->getNumCols(); j++ ){
+        boardArr->insert(i, j, currLine[j]);
       }
-      ++i;
+      i++;
     }
   }
+  else return -1;
   return 0;
 }
 
@@ -156,8 +161,16 @@ int Board::move(const char & dir){
 /* Prints the board to stdout
  */
 void Board::displayBoard(){
+   /*std::cout << boardArr->getNumRows() << "X"  << boardArr->getNumCols()<<std::endl;
+   std::cout << '"' << bChar << '"' << std::endl;
+   std::cout << '"' << fpChar << '"' << std::endl;
+   std::cout << '"' << eChar << '"' << std::endl;*/
+  
   // print top border
-  for ( int i = 0; i < boardArr->getNumRows(); i++ ){std::cout << bChar;}
+  for ( int i = 0; i <= boardArr->getNumRows()+1; i++ ){
+    std::cout << bChar;
+  }
+  std::cout << std::endl;
   // print board
   for ( int i = 0; i < boardArr->getNumRows(); i++ ){
     std::cout << bChar;
@@ -167,5 +180,7 @@ void Board::displayBoard(){
     std::cout << bChar << std::endl;
   }
   // print bottom border
-  for ( int i = 0; i < boardArr->getNumRows(); i++ ){std::cout << bChar;}
+  for ( int i = 0; i <= boardArr->getNumRows()+1; i++ ){
+    std::cout << bChar;
+  }
 }

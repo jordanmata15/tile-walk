@@ -1,24 +1,31 @@
-
 #include <gtest/gtest.h>
 #include "Board.hpp"
 
 class TestBoard : public testing::Test{
   public:
     
-//    Board b;
 
     virtual void SetUp(){
-      //std::cout << "GOT HERE!";
     }
 
     virtual void TestDown(){
     }
 };
 
-TEST_F( TestBoard, validSizeTest ){
+TEST_F( TestBoard, validMoveTest ){
+  //ASSERT_EQ(10, tenByTen);
 }
 
-TEST_F( TestBoard, invalidSizeTest ){
+TEST_F( TestBoard, invalidMoveTest ){
+}
+
+TEST_F( TestBoard, loadBoard ){
+  Board tenByTen(10, 10,  ' ', ' ', ' ');
+  if(tenByTen.loadBoard("./BoardSamples/10x10Numbered.brd") == 0){
+    std::cout << std::endl;
+    tenByTen.displayBoard();
+    std::cout << std::endl;
+  }
 }
 
 int main(int argc, char* argv[]){

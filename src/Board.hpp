@@ -27,8 +27,7 @@ class Board{
     char fpChar; // footprint tiles (have been walked on)
     char eChar; // empty tiles (not walked on)
     std::pair<int,int> currIdx;
-    TwoDArray<char>* boardArr;
-    
+    TwoDArray<char>* boardArr; 
   
   public:
     

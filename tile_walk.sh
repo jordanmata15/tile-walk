@@ -3,7 +3,8 @@
 STATUS='./status'
 
 #Create the status directory if it does not exist
-if [ ! -f $STATUS ]; then
+if [ ! -f "${STATUS}" ]; then
+  echo 'Directory does not exist!'
   mkdir $STATUS
 fi
 
