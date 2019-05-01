@@ -17,6 +17,14 @@ const char DOWN = 's';
 const char LEFT = 'a';
 const char RIGHT = 'd';
 
+const int DEF_ROWS = 10;
+const int DEF_COLS = 10;
+
+const char DEF_BORDER = '=';
+const char DEF_FPRINT = '=';
+const char DEF_EMPTY = '=';
+
+
 /* Class used to simulate a 2D board using chars to indicate
  * which tiles (spaces) have been walked on (filled)
  */
@@ -30,6 +38,14 @@ class Board{
     TwoDArray<char>* boardArr; 
   
   public:
+    /* Default constructor for the board object. Initializes the following:
+     *  
+     * size: 10x10
+     * border: '='
+     * footprint: '#'
+     * empty: ' '
+     */
+    Board();
     
     /* Constructor for the board object. 
      *

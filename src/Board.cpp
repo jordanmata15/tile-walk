@@ -4,6 +4,14 @@
  */
 
 #include "Board.hpp"
+/* Default constructor for the board object. Initializes the following:
+ *  
+ * size: 10x10
+ * border: '='
+ * footprint: '#'
+ * empty: ' '
+ */
+Board::Board():Board(DEF_ROWS, DEF_COLS, DEF_BORDER, DEF_FPRINT, DEF_EMPTY){}
 
 /* Constructor for the board object. 
  *
@@ -71,7 +79,6 @@ int Board::loadBoard( std::string filename ){
     eChar = currLine[0];
     
     // reinitialize new 2D array
-    delete boardArr;
     boardArr = new TwoDArray<char>(numRows, numCols);
     clearBoard();
 
